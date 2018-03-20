@@ -3,19 +3,35 @@
 //****************** SERIOUSLY TEST USING console.log()!!! ******************
 
 $(document).ready(function(){
- $.ajax({
-      url: "https://api.giphy.com/v1/stickers/search?q=dog&api_key=dc6zaTOxFJmzC",
+
+$("button").click(function(){
+    var input = $("input").val();
+    callGiphyAPIWithSearchTerm(input);
+});
+
+function giphyURLWithSearchTerm(searchTerm) {
+    var newUrl =  "https://api.giphy.com/v1/stickers/search?q=" + searchTerm +
+	"&api_key=dc6zaTOxFJmzC";
+    return newUrl;
+}
+
+function appendImageToBody(srcURL) {
+    $('body').append('<img src=' + srcURL + '>');
+}
+
+function callGiphyAPIWithSearchTerm(searchTerm) {
+    $.ajax({
+      url: giphyURLWithSearchTerm(searchTerm),
       method: "GET",
       success: function(response) {
-                     console.log(response);
-                console.log(response.data);
-                console.log(response.data[0]);
-               console.log(response.data[0].type);
-             console.log(response.data[0].title);
-             console.log(response.data[0].images.original.url);
-             $('body').html("<img src=" + response.data[4].images.original.url +"/>");
-      },    
-    });
+           var random= Math.floor(Math.random() * 20);
+           var url = response.data[random].images.original.url;
+           appendImageToBody(url);
+      },
+    }); 
+}
+
+  
          
          
     
